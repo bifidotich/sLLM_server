@@ -1,4 +1,4 @@
-transformers~=4.40.1
+transformers~=4.36.2
 Flask~=3.0.3
 accelerate~=0.30.0
 bitsandbytes~=0.43.1
