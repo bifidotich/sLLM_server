@@ -50,9 +50,8 @@ def generate_response_from_messages(messages, condition='GPT4 Correct'):
         local_prompt = f'{condition} {role}: {text}<|end_of_turn|>{prompt}'
         if len(local_prompt) < max_length:
             prompt = local_prompt
-        else:
-            break
-    print(prompt)
+    if prompt == start_prompt:
+        raise ValueError('prompt does not fit into the allowed value')
     response = aimodel.generate_response(model=model, tokenizer=tokenizer, prompt=prompt, max_length=max_length)
     return response.split(start_prompt)[-1]
 
