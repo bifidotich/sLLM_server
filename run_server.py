@@ -59,22 +59,26 @@ def generate_response_from_messages(messages, condition='GPT4 Correct'):
 
 @app.route('/v1/chat/completions', methods=['POST'])
 def chat_completions():
-    data = request.json
-    model = data.get('model', None)
-    condition = data.get('condition', None)
-    messages = data.get('messages', [])
+    try:
+        data = request.json
+        model_name = data.get('model', None)
+        condition = data.get('condition', None)
+        messages = data.get('messages', [])
 
-    if not model or not messages:
-        return jsonify({"error": "Model and messages are required"}), 400
-    if condition is None:
-        condition = ''
-    response_text = generate_response_from_messages(messages, condition=condition)
+        if not model or not messages:
+            return jsonify({"error": "Model and messages are required"}), 400
+        if condition is None:
+            condition = ''
+        response_text = generate_response_from_messages(messages, condition=condition)
 
-    response = sample_response()
-    response["model"] = str(model)
-    response["choices"][0]["message"]["content"] = response_text
+        response = sample_response()
+        response["model"] = str(model_name)
+        response["choices"][0]["message"]["content"] = response_text
 
-    return jsonify(response)
+        return jsonify(response)
+
+    except Exception:
+        return jsonify({"error": "Bad request"}), 400
 
 
 if __name__ == '__main__':
